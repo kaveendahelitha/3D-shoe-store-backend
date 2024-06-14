@@ -15,20 +15,9 @@ public class UserManagementController {
     @Autowired
     private UserManegementService userManegementService;
 
-    @PostMapping("/auth/register")
-    public ResponseEntity<RequestResponse> register(@RequestBody RequestResponse reg){
-        return ResponseEntity.ok(userManegementService.register(reg));
-    }
 
-    @PostMapping("/auth/login")
-    public ResponseEntity<RequestResponse> login(@RequestBody RequestResponse req){
-        return ResponseEntity.ok(userManegementService.login(req));
-    }
 
-    @PostMapping("/auth/refresh")
-    public ResponseEntity<RequestResponse> refreshToken(@RequestBody RequestResponse req){
-        return ResponseEntity.ok(userManegementService.refreshToken(req));
-    }
+
 
 
     @GetMapping("/admin/get-all-users")
