@@ -4,6 +4,7 @@ package com.shoe.shoemanagement.service;
 import com.shoe.shoemanagement.dto.RequestResponse;
 import com.shoe.shoemanagement.entity.SystemUsers;
 import com.shoe.shoemanagement.repository.UsersRepo;
+import com.shoe.shoemanagement.utils.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,75 +28,9 @@ public class UserManegementService {
     private PasswordEncoder passwordEncoder;
 
 
-    public RequestResponse register(RequestResponse registrationRequest){
-        RequestResponse resp = new RequestResponse();
-
-        try {
-            SystemUsers systemUser = new SystemUsers();
-            systemUser.setEmail(registrationRequest.getEmail());
-            systemUser.setRole(registrationRequest.getRole());
-            systemUser.setName(registrationRequest.getName());
-            systemUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            SystemUsers systemUsersResult = usersRepo.save(systemUser);
-            if (systemUsersResult.getId()>0) {
-                resp.setSystemUsers((systemUsersResult));
-                resp.setMessage("User Saved Successfully");
-                resp.setStatusCode(200);
-            }
-
-        }catch (Exception e){
-            resp.setStatusCode(500);
-            resp.setError(e.getMessage());
-        }
-        return resp;
-    }
 
 
-    public RequestResponse login(RequestResponse loginRequest){
-        RequestResponse response = new RequestResponse();
-        try {
-            authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
-                            loginRequest.getPassword()));
-            var user = usersRepo.findByEmail(loginRequest.getEmail()).orElseThrow();
-            var jwt = jwtUtils.generateToken(user);
-            var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
-            response.setStatusCode(200);
-            response.setToken(jwt);
-            response.setRole(user.getRole());
-            response.setRefreshToken(refreshToken);
-            response.setExpirationTime("24Hrs");
-            response.setMessage("Successfully Logged In");
 
-        }catch (Exception e){
-            response.setStatusCode(500);
-            response.setMessage(e.getMessage());
-        }
-        return response;
-    }
-
-    public RequestResponse refreshToken(RequestResponse refreshTokenReqiest){
-        RequestResponse response = new RequestResponse();
-        try{
-            String ourEmail = jwtUtils.extractUsername(refreshTokenReqiest.getToken());
-            SystemUsers users = usersRepo.findByEmail(ourEmail).orElseThrow();
-            if (jwtUtils.isTokenValid(refreshTokenReqiest.getToken(), users)) {
-                var jwt = jwtUtils.generateToken(users);
-                response.setStatusCode(200);
-                response.setToken(jwt);
-                response.setRefreshToken(refreshTokenReqiest.getToken());
-                response.setExpirationTime("24Hr");
-                response.setMessage("Successfully Refreshed Token");
-            }
-            response.setStatusCode(200);
-            return response;
-
-        }catch (Exception e){
-            response.setStatusCode(500);
-            response.setMessage(e.getMessage());
-            return response;
-        }
-    }
 
 
     public RequestResponse getAllUsers() {
