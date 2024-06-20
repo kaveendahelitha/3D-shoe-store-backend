@@ -1,8 +1,11 @@
 package com.shoe.shoemanagement.controller;
 
-import com.shoe.shoemanagement.dto.RequestResponse;
-import com.shoe.shoemanagement.entity.SystemUsers;
-import com.shoe.shoemanagement.service.UserManegementService;
+//import com.shoe.shoemanagement.dto.RequestResponse;
+//import com.shoe.shoemanagement.entity.SystemUsers;
+import com.shoe.shoemanagement.entity.User;
+import com.shoe.shoemanagement.dto.ReqRes;
+//import com.shoe.shoemanagement.service.UserManegementService;
+import com.shoe.shoemanagement.Serviceuser.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,41 +16,39 @@ import org.springframework.web.bind.annotation.*;
 public class UserManagementController {
 
     @Autowired
-    private UserManegementService userManegementService;
-
-
-
+   // private UserManegementService userManegementService;
+    private UserService userService;
 
 
 
     @GetMapping("/admin/get-all-users")
-    public ResponseEntity<RequestResponse> getAllUsers(){
-        return ResponseEntity.ok(userManegementService.getAllUsers());
+    public ResponseEntity<ReqRes> getAllUsers(){
+        return ResponseEntity.ok(userService.getAllUsers());
 
     }
 
     @GetMapping("/admin/get-users/{userId}")
-    public ResponseEntity<RequestResponse> getUSerByID(@PathVariable Integer userId){
-        return ResponseEntity.ok(userManegementService.getUsersById(userId));
+    public ResponseEntity<ReqRes> getUSerByID(@PathVariable Integer userId){
+        return ResponseEntity.ok(userService.getUsersById(userId));
 
     }
 
     @PutMapping("/admin/update/{userId}")
-    public ResponseEntity<RequestResponse> updateUser(@PathVariable Integer userId, @RequestBody SystemUsers reqres){
-        return ResponseEntity.ok(userManegementService.updateUser(userId, reqres));
+    public ResponseEntity<ReqRes> updateUser(@PathVariable Integer userId, @RequestBody User reqres){
+        return ResponseEntity.ok(userService.updateUser(userId, reqres));
     }
 
     @GetMapping("/adminuser/get-profile")
-    public ResponseEntity<RequestResponse> getMyProfile(){
+    public ResponseEntity<ReqRes> getMyProfile(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        RequestResponse response = userManegementService.getMyInfo(email);
+        ReqRes response = userService.getMyInfo(email);
         return  ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
     @DeleteMapping("/admin/delete/{userId}")
-    public ResponseEntity<RequestResponse> deleteUSer(@PathVariable Integer userId){
-        return ResponseEntity.ok(userManegementService.deleteUser(userId));
+    public ResponseEntity<ReqRes> deleteUSer(@PathVariable Integer userId){
+        return ResponseEntity.ok(userService.deleteUser(userId));
     }
 
 }

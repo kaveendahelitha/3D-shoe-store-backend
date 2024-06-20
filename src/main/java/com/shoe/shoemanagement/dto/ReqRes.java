@@ -2,6 +2,7 @@ package com.shoe.shoemanagement.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.shoe.shoemanagement.entity.User;
 import lombok.Data;
 
 import java.util.List;
@@ -16,12 +17,16 @@ public class ReqRes {
     private String token;
     private String expirationTime;
     private String orderConfirmationCode;
-
-    private UserDTO user;
+    private String error;
+    //private UserDTO user;
     private ProductDTO product;
+    private String refreshToken;
+    private String email;
+    private String password;
+    private String name;
+    private User User;
+    private List<User> UserList;
 
-
-    private List<UserDTO> userList;
 
 
     private List<ProductDTO> productList;

@@ -10,7 +10,8 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
-    private Long id;
+
+    private int id;
     private String userFirstname;
     private String userLastname;
     private String address;
