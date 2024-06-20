@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 @RestController
 public class DashboardController {
 
-   // @Autowired
-  // private ProductRepository productRepository;
+    @Autowired
+  private ItemRepository itemRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -33,7 +33,7 @@ public class DashboardController {
     public Map<String, Object> getDashboardData() {
         Map<String, Object> data = new HashMap<>();
 
-       // data.put("productsCount", productRepository.count());
+        data.put("itemsCount", itemRepository.count());
         data.put("categoriesCount", categoryRepository.count());
         data.put("customersCount", customerRepository.count());
         data.put("alertsCount", alertRepository.count());
