@@ -1,0 +1,10 @@
+package com.shoe.shoemanagement.repository;
+
+import com.shoe.shoemanagement.entity.ChartDataEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ChartDataRepository extends JpaRepository<ChartDataEntity, Long> {
+    // Define any custom methods for chart data retrieval if needed
+}
