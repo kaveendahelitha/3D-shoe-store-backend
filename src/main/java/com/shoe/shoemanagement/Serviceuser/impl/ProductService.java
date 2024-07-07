@@ -80,5 +80,20 @@ public class ProductService implements IProductService {
         return reqRes;
     }
 
+    @Override
+    public ReqRes addProduct(ProductDTO productDTO) {
+        ReqRes reqRes = new ReqRes();
+        try {
+            Product product = Utils.mapProductDTOToProductEntity(productDTO);
+            productRepo.save(product);
+            reqRes.setStatusCode(200);
+            reqRes.setMessage("Product added successfully");
+        } catch (Exception e) {
+            reqRes.setStatusCode(500);
+            reqRes.setMessage("Error adding product: " + e.getMessage());
+        }
+        return reqRes;
+    }
+
 
 }

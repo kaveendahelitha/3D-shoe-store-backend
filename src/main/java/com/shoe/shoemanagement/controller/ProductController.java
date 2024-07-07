@@ -3,6 +3,7 @@ package com.shoe.shoemanagement.controller;
 
 import com.shoe.shoemanagement.Serviceuser.interfac.IProductService;
 import com.shoe.shoemanagement.dto.PriceLevelDTO;
+import com.shoe.shoemanagement.dto.ProductDTO;
 import com.shoe.shoemanagement.dto.ReqRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,12 @@ public class ProductController {
             return ResponseEntity.status(response.getStatusCode()).body(response);
         }
         ReqRes reqRes = productService.getProductsByColorPriceAndCategory(category, productColor, priceRange);
+        return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<ReqRes> addProduct(@RequestBody ProductDTO productDTO) {
+        ReqRes reqRes = productService.addProduct(productDTO);
         return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
     }
 

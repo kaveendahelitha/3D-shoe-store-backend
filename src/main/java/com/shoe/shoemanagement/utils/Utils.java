@@ -90,5 +90,16 @@ userDTO.setRole(user.getRole());
                 collect(Collectors.toList());
     }
 
+    public static Product mapProductDTOToProductEntity(ProductDTO productDTO) {
+        Product product = new Product();
+        product.setProductName(productDTO.getProductName());
+        product.setCategory(productDTO.getCategory());
+        product.setProductPrice(productDTO.getProductPrice());
+        product.setProductPhotoUrl(productDTO.getProductPhotoUrl());
+        product.setProductColor(productDTO.getProductColor());
+        product.setProductDescription(productDTO.getProductDescription());
+        return product;
+    }
+
 
 }
