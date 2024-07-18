@@ -17,5 +17,9 @@ public interface IProductService {
 
     ReqRes getAllProducts();
     ReqRes addProduct(ProductDTO productDTO);
+    ReqRes getProductById(Long id);
+    ReqRes updateProduct(Long id, ProductDTO productDTO);
+    ReqRes deleteProduct(Long id);
+
 
 }

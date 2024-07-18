@@ -62,5 +62,23 @@ public class ProductController {
         return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
     }
 
+    @GetMapping("/product/{id}")
+    public ResponseEntity<ReqRes> getProductById(@PathVariable Long id) {
+        ReqRes reqRes = productService.getProductById(id);
+        return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
+    }
+
+    @PutMapping("/product-update/{id}")
+    public ResponseEntity<ReqRes> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        ReqRes reqRes = productService.updateProduct(id, productDTO);
+        return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
+    }
+
+    @DeleteMapping("/product-delete/{id}")
+    public ResponseEntity<ReqRes> deleteProduct(@PathVariable Long id) {
+        ReqRes reqRes = productService.deleteProduct(id);
+        return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
+    }
+
 
 }
