@@ -1,6 +1,5 @@
 package com.shoe.shoemanagement.controller;
 
-
 import com.shoe.shoemanagement.Serviceuser.interfac.IProductService;
 import com.shoe.shoemanagement.dto.PriceLevelDTO;
 import com.shoe.shoemanagement.dto.ProductDTO;
@@ -8,6 +7,7 @@ import com.shoe.shoemanagement.dto.ReqRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -57,8 +57,10 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ReqRes> addProduct(@RequestBody ProductDTO productDTO) {
-        ReqRes reqRes = productService.addProduct(productDTO);
+    public ResponseEntity<ReqRes> addProduct(
+            @RequestPart("product") ProductDTO productDTO,
+            @RequestPart("productPhoto") MultipartFile productPhoto) {
+        ReqRes reqRes = productService.addProduct(productDTO, productPhoto);
         return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
     }
 
@@ -69,8 +71,11 @@ public class ProductController {
     }
 
     @PutMapping("/product-update/{id}")
-    public ResponseEntity<ReqRes> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
-        ReqRes reqRes = productService.updateProduct(id, productDTO);
+    public ResponseEntity<ReqRes> updateProduct(
+            @PathVariable Long id,
+            @RequestPart("product") ProductDTO productDTO,
+            @RequestPart("productPhoto") MultipartFile productPhoto) {
+        ReqRes reqRes = productService.updateProduct(id, productDTO, productPhoto);
         return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
     }
 
@@ -79,6 +84,4 @@ public class ProductController {
         ReqRes reqRes = productService.deleteProduct(id);
         return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
     }
-
-
 }

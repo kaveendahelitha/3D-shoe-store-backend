@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -28,6 +26,10 @@ public class Product {
     private String productColor;
     private String productDescription;
 
+
+    public Long getProductId() {
+        return id;
+    }
 
     @Override
     public String toString() {
