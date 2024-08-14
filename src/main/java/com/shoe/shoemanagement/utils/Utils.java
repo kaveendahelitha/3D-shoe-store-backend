@@ -48,14 +48,13 @@ userDTO.setRole(user.getRole());
 
     public static ProductDTO mapProductEntityToProductDTO(Product product) {
         ProductDTO productDTO = new ProductDTO();
-
-      productDTO.setId(product.getId());
-      productDTO.setProductName(product.getProductName());
-      productDTO.setCategory(product.getCategory());
-      productDTO.setProductPrice(product.getProductPrice());
-      productDTO.setProductPhotoUrl(product.getProductPhotoUrl());
-      productDTO.setProductColor(product.getProductColor());
-      productDTO.setProductDescription(product.getProductDescription());
+        productDTO.setId(product.getId());
+        productDTO.setProductName(product.getProductName());
+        productDTO.setCategory(product.getCategory());
+        productDTO.setProductPrice(product.getProductPrice());
+        productDTO.setProductPhotoUrl(product.getProductPhotoUrl());
+        productDTO.setProductColor(product.getProductColor());
+        productDTO.setProductDescription(product.getProductDescription());
         return productDTO;
     }
 
