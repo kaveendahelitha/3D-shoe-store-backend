@@ -49,8 +49,10 @@ public class SecurityConfig {
                         }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(HttpMethod.POST, "/disableuser").permitAll() // Ensure this path is permitted
-                        .requestMatchers("/auth/**", "/products/**", "/orders/**").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/user").permitAll()
+                        .requestMatchers("/auth/**", "/products/**", "/orders/**", "/api/v1/**","/api/upload/**").permitAll()
+
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

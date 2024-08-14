@@ -49,14 +49,13 @@ userDTO.setRole(user.getRole());
 
     public static ProductDTO mapProductEntityToProductDTO(Product product) {
         ProductDTO productDTO = new ProductDTO();
-
-      productDTO.setId(product.getId());
-      productDTO.setProductName(product.getProductName());
-      productDTO.setCategory(product.getCategory());
-      productDTO.setProductPrice(product.getProductPrice());
-      productDTO.setProductPhotoUrl(product.getProductPhotoUrl());
-      productDTO.setProductColor(product.getProductColor());
-      productDTO.setProductDescription(product.getProductDescription());
+        productDTO.setId(product.getId());
+        productDTO.setProductName(product.getProductName());
+        productDTO.setCategory(product.getCategory());
+        productDTO.setProductPrice(product.getProductPrice());
+        productDTO.setProductPhotoUrl(product.getProductPhotoUrl());
+        productDTO.setProductColor(product.getProductColor());
+        productDTO.setProductDescription(product.getProductDescription());
         return productDTO;
     }
 
@@ -89,6 +88,17 @@ userDTO.setRole(user.getRole());
     public static List<ProductDTO> mapProductListEntityToProductListDTO(List<Product> productList) {
         return productList.stream().map(Utils::mapProductEntityToProductDTO).
                 collect(Collectors.toList());
+    }
+
+    public static Product mapProductDTOToProductEntity(ProductDTO productDTO) {
+        Product product = new Product();
+        product.setProductName(productDTO.getProductName());
+        product.setCategory(productDTO.getCategory());
+        product.setProductPrice(productDTO.getProductPrice());
+        product.setProductPhotoUrl(productDTO.getProductPhotoUrl());
+        product.setProductColor(productDTO.getProductColor());
+        product.setProductDescription(productDTO.getProductDescription());
+        return product;
     }
 
 

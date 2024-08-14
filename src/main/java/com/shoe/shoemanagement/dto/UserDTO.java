@@ -9,9 +9,11 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
-    private Long id;
 
-    @NotBlank(message = "First name is required")
+
+    private int id;
+
+     @NotBlank(message = "First name is required")
     private String userFirstname;
 
     @NotBlank(message = "Last name is required")

@@ -1,12 +1,13 @@
 package com.shoe.shoemanagement.controller;
 
-
 import com.shoe.shoemanagement.Serviceuser.interfac.IProductService;
 import com.shoe.shoemanagement.dto.PriceLevelDTO;
+import com.shoe.shoemanagement.dto.ProductDTO;
 import com.shoe.shoemanagement.dto.ReqRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -55,5 +56,32 @@ public class ProductController {
         return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<ReqRes> addProduct(
+            @RequestPart("product") ProductDTO productDTO,
+            @RequestPart("productPhoto") MultipartFile productPhoto) {
+        ReqRes reqRes = productService.addProduct(productDTO, productPhoto);
+        return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
+    }
 
+    @GetMapping("/product/{id}")
+    public ResponseEntity<ReqRes> getProductById(@PathVariable Long id) {
+        ReqRes reqRes = productService.getProductById(id);
+        return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
+    }
+
+    @PutMapping("/product-update/{id}")
+    public ResponseEntity<ReqRes> updateProduct(
+            @PathVariable Long id,
+            @RequestPart("product") ProductDTO productDTO,
+            @RequestPart("productPhoto") MultipartFile productPhoto) {
+        ReqRes reqRes = productService.updateProduct(id, productDTO, productPhoto);
+        return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
+    }
+
+    @DeleteMapping("/product-delete/{id}")
+    public ResponseEntity<ReqRes> deleteProduct(@PathVariable Long id) {
+        ReqRes reqRes = productService.deleteProduct(id);
+        return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
+    }
 }
