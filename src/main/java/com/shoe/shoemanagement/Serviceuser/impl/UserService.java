@@ -22,8 +22,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import javax.validation.ConstraintViolationException;
+
+
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class UserService implements IUserService {
@@ -46,17 +59,25 @@ public class UserService implements IUserService {
     public ReqRes register(User user) {
         ReqRes response = new ReqRes();
         try {
+            // Validate the user object
             if (user.getRole() == null || user.getRole().isBlank()) {
                 user.setRole("USER");
             }
             if (userRepo.existsByEmail(user.getEmail())) {
-                throw new OurException(user.getEmail() + " already exists");
+                throw new OurException("Email " + user.getEmail() + " already exists");
             }
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             User savedUser = userRepo.save(user);
             UserDTO userdto = Utils.mapUserEntityToUserDTO(savedUser);
             response.setStatusCode(200);
+
+            response.setUser(userDTO);
+        } catch (ConstraintViolationException e) {
+            response.setStatusCode(400);
+            response.setMessage("Validation error: " + e.getMessage());
+
             response.setUser(user);
+
         } catch (OurException e) {
             response.setStatusCode(400);
             response.setMessage(e.getMessage());
@@ -93,6 +114,126 @@ public class UserService implements IUserService {
         }
         return reqRes;
     }
+
+
+    @Override
+    public ReqRes getAllUsers() {
+        ReqRes response = new ReqRes();
+        try {
+            List<User> userList = userRepo.findAll();
+            List<UserDTO> userDTOList = Utils.mapUserListEntityToUserListDTO(userList);
+            response.setStatusCode(200);
+            response.setMessage("Successful");
+            response.setUserList(userDTOList);
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage("Error getting all users: " + e.getMessage());
+        }
+        return response;
+    }
+
+    @Override
+    public ReqRes updateUserProfile(String email, UserDTO userDto) {
+        ReqRes response = new ReqRes();
+        try {
+            User existingUser = userRepo.findByEmail(email)
+                    .orElseThrow(() -> new OurException("User not found"));
+
+            if (userDto.getUserFirstname() != null) existingUser.setUserFirstname(userDto.getUserFirstname());
+            if (userDto.getUserLastname() != null) existingUser.setUserLastname(userDto.getUserLastname());
+            if (userDto.getPhoneNumber() != null && !userDto.getPhoneNumber().isBlank()) existingUser.setPhoneNumber(userDto.getPhoneNumber());
+            if (userDto.getAddress() != null) existingUser.setAddress(userDto.getAddress());
+            if (userDto.getEmail() != null && !userDto.getEmail().isBlank()) existingUser.setEmail(userDto.getEmail());
+
+            // Update password if provided
+            if (userDto.getPassword() != null && !userDto.getPassword().isBlank()) {
+                existingUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            }
+
+            User updatedUser = userRepo.save(existingUser);
+            UserDTO updatedUserDTO = Utils.mapUserEntityToUserDTO(updatedUser);
+
+            response.setStatusCode(200);
+            response.setMessage("User profile updated successfully");
+            response.setUser(updatedUserDTO);
+        } catch (ConstraintViolationException e) {
+            response.setStatusCode(400);
+            response.setMessage("Validation error: " + e.getMessage());
+        } catch (OurException e) {
+            response.setStatusCode(404);
+            response.setMessage(e.getMessage());
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage("Internal server error: " + e.getMessage());
+            e.printStackTrace(); // Print stack trace for detailed debugging
+        }
+        return response;
+    }
+
+    @Override
+    public ReqRes deleteUser(String userId) {
+        ReqRes response = new ReqRes();
+        try {
+            Long id = Long.parseLong(userId);
+            userRepo.findById(id).orElseThrow(() -> new OurException("User not found"));
+            userRepo.deleteById(id);
+            response.setStatusCode(200);
+            response.setMessage("User deleted successfully");
+        } catch (NumberFormatException e) {
+            response.setStatusCode(400);
+            response.setMessage("Invalid user ID format");
+        } catch (OurException e) {
+            response.setStatusCode(404);
+            response.setMessage(e.getMessage());
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage("Error deleting user: " + e.getMessage());
+        }
+        return response;
+    }
+
+    @Override
+    public ReqRes getUserById(String userId) {
+        ReqRes response = new ReqRes();
+        try {
+            Long id = Long.parseLong(userId);
+            User user = userRepo.findById(id)
+                    .orElseThrow(() -> new OurException("User not found"));
+            UserDTO userDTO = Utils.mapUserEntityToUserDTO(user);
+            response.setStatusCode(200);
+            response.setMessage("User found successfully");
+            response.setUser(userDTO);
+        } catch (NumberFormatException e) {
+            response.setStatusCode(400);
+            response.setMessage("Invalid user ID format");
+        } catch (OurException e) {
+            response.setStatusCode(404);
+            response.setMessage(e.getMessage());
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage("Error getting user by ID: " + e.getMessage());
+        }
+        return response;
+    }
+
+    @Override
+    public ReqRes getMyInfo(String email) {
+        ReqRes response = new ReqRes();
+        try {
+            User user = userRepo.findByEmail(email)
+                    .orElseThrow(() -> new OurException("User not found"));
+            UserDTO userDTO = Utils.mapUserEntityToUserDTO(user);
+            response.setStatusCode(200);
+            response.setMessage("User profile retrieved successfully");
+            response.setUser(userDTO);
+        } catch (OurException e) {
+            response.setStatusCode(404);
+            response.setMessage(e.getMessage());
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setMessage("Error retrieving user profile: " + e.getMessage());
+        }
+        return response;
 
   // user indo in controller
     public ReqRes getMyInfo(String email){
@@ -200,5 +341,6 @@ public class UserService implements IUserService {
             reqRes.setMessage("Error occurred while deleting user: " + e.getMessage());
         }
         return reqRes;
+
     }
 }
