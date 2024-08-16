@@ -70,8 +70,7 @@ public class UserService implements IUserService {
             User savedUser = userRepo.save(user);
             UserDTO userdto = Utils.mapUserEntityToUserDTO(savedUser);
             response.setStatusCode(200);
-
-            response.setUser(userDTO);
+            response.setUser(savedUser);
         } catch (ConstraintViolationException e) {
             response.setStatusCode(400);
             response.setMessage("Validation error: " + e.getMessage());
@@ -116,21 +115,7 @@ public class UserService implements IUserService {
     }
 
 
-    @Override
-    public ReqRes getAllUsers() {
-        ReqRes response = new ReqRes();
-        try {
-            List<User> userList = userRepo.findAll();
-            List<UserDTO> userDTOList = Utils.mapUserListEntityToUserListDTO(userList);
-            response.setStatusCode(200);
-            response.setMessage("Successful");
-            response.setUserList(userDTOList);
-        } catch (Exception e) {
-            response.setStatusCode(500);
-            response.setMessage("Error getting all users: " + e.getMessage());
-        }
-        return response;
-    }
+
 
     @Override
     public ReqRes updateUserProfile(String email, UserDTO userDto) {
@@ -155,7 +140,7 @@ public class UserService implements IUserService {
 
             response.setStatusCode(200);
             response.setMessage("User profile updated successfully");
-            response.setUser(updatedUserDTO);
+            response.setUser(updatedUser);
         } catch (ConstraintViolationException e) {
             response.setStatusCode(400);
             response.setMessage("Validation error: " + e.getMessage());
@@ -175,8 +160,8 @@ public class UserService implements IUserService {
         ReqRes response = new ReqRes();
         try {
             Long id = Long.parseLong(userId);
-            userRepo.findById(id).orElseThrow(() -> new OurException("User not found"));
-            userRepo.deleteById(id);
+            userRepo.findById(Math.toIntExact(id)).orElseThrow(() -> new OurException("User not found"));
+            userRepo.deleteById(Math.toIntExact(id));
             response.setStatusCode(200);
             response.setMessage("User deleted successfully");
         } catch (NumberFormatException e) {
@@ -197,12 +182,12 @@ public class UserService implements IUserService {
         ReqRes response = new ReqRes();
         try {
             Long id = Long.parseLong(userId);
-            User user = userRepo.findById(id)
+            User user = userRepo.findById(Math.toIntExact(id))
                     .orElseThrow(() -> new OurException("User not found"));
             UserDTO userDTO = Utils.mapUserEntityToUserDTO(user);
             response.setStatusCode(200);
             response.setMessage("User found successfully");
-            response.setUser(userDTO);
+
         } catch (NumberFormatException e) {
             response.setStatusCode(400);
             response.setMessage("Invalid user ID format");
@@ -217,23 +202,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public ReqRes getMyInfo(String email) {
-        ReqRes response = new ReqRes();
-        try {
-            User user = userRepo.findByEmail(email)
-                    .orElseThrow(() -> new OurException("User not found"));
-            UserDTO userDTO = Utils.mapUserEntityToUserDTO(user);
-            response.setStatusCode(200);
-            response.setMessage("User profile retrieved successfully");
-            response.setUser(userDTO);
-        } catch (OurException e) {
-            response.setStatusCode(404);
-            response.setMessage(e.getMessage());
-        } catch (Exception e) {
-            response.setStatusCode(500);
-            response.setMessage("Error retrieving user profile: " + e.getMessage());
-        }
-        return response;
+
 
   // user indo in controller
     public ReqRes getMyInfo(String email){
