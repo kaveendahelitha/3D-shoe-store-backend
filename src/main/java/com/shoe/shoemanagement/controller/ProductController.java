@@ -4,12 +4,21 @@ import com.shoe.shoemanagement.Serviceuser.interfac.IProductService;
 import com.shoe.shoemanagement.dto.PriceLevelDTO;
 import com.shoe.shoemanagement.dto.ProductDTO;
 import com.shoe.shoemanagement.dto.ReqRes;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/products")
@@ -17,7 +26,7 @@ public class ProductController {
 
     @Autowired
     private IProductService productService;
-
+    private final Path rootLocation = Paths.get("product-images");
     @GetMapping("/all")
     public ResponseEntity<ReqRes> getAllProducts() {
         ReqRes reqRes = productService.getAllProducts();
@@ -83,5 +92,22 @@ public class ProductController {
     public ResponseEntity<ReqRes> deleteProduct(@PathVariable Long id) {
         ReqRes reqRes = productService.deleteProduct(id);
         return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
+    }
+    @GetMapping("/image/{filename}")
+    public ResponseEntity<Resource> serveImage(@PathVariable String filename) {
+        try {
+            Path file = rootLocation.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            } else {
+                return ResponseEntity.status(404).body(null);
+            }
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(null);
+        }
     }
 }
