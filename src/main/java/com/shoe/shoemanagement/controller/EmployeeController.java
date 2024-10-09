@@ -70,7 +70,12 @@ public class EmployeeController {
         return ResponseEntity.ok(response);
     }
 
-
+    // New endpoint to get employee details for dropdown (ID, Name, Email)
+    @GetMapping("/employees/dropdown")
+    public ResponseEntity<List<Employee>> getEmployeeDropdownDetails() {
+        List<Employee> employees = employeeRepository.findAll();
+        return ResponseEntity.ok(employees);
+    }
 }
 
 
