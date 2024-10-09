@@ -35,27 +35,23 @@ public class Utils {
        UserDTO userDTO=new UserDTO();
 
         userDTO.setId(user.getId());
-userDTO.setUserFirstname(user.getUserFirstname());
-userDTO.setUserLastname(user.getUserLastname());
-userDTO.setAddress(user.getAddress());
-userDTO.setEmail(user.getEmail());
-userDTO.setRole(user.getRole());
-
-
-
+        userDTO.setUserFirstname(user.getUserFirstname());
+        userDTO.setUserLastname(user.getUserLastname());
+        userDTO.setPhoneNumber(user.getPhoneNumber());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setRole(user.getRole());
         return userDTO;
     }
 
     public static ProductDTO mapProductEntityToProductDTO(Product product) {
         ProductDTO productDTO = new ProductDTO();
-
-      productDTO.setId(product.getId());
-      productDTO.setProductName(product.getProductName());
-      productDTO.setCategory(product.getCategory());
-      productDTO.setProductPrice(product.getProductPrice());
-      productDTO.setProductPhotoUrl(product.getProductPhotoUrl());
-      productDTO.setProductColor(product.getProductColor());
-      productDTO.setProductDescription(product.getProductDescription());
+        productDTO.setId(product.getId());
+        productDTO.setProductName(product.getProductName());
+        productDTO.setCategory(product.getCategory());
+        productDTO.setProductPrice(product.getProductPrice());
+        productDTO.setProductPhotoUrl(product.getProductPhotoUrl());
+        productDTO.setProductColor(product.getProductColor());
+        productDTO.setProductDescription(product.getProductDescription());
         return productDTO;
     }
 
@@ -88,6 +84,17 @@ userDTO.setRole(user.getRole());
     public static List<ProductDTO> mapProductListEntityToProductListDTO(List<Product> productList) {
         return productList.stream().map(Utils::mapProductEntityToProductDTO).
                 collect(Collectors.toList());
+    }
+
+    public static Product mapProductDTOToProductEntity(ProductDTO productDTO) {
+        Product product = new Product();
+        product.setProductName(productDTO.getProductName());
+        product.setCategory(productDTO.getCategory());
+        product.setProductPrice(productDTO.getProductPrice());
+        product.setProductPhotoUrl(productDTO.getProductPhotoUrl());
+        product.setProductColor(productDTO.getProductColor());
+        product.setProductDescription(productDTO.getProductDescription());
+        return product;
     }
 
 

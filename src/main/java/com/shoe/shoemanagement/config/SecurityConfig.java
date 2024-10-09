@@ -1,6 +1,7 @@
 package com.shoe.shoemanagement.config;
 
 import com.shoe.shoemanagement.Serviceuser.CustomUserDetailsService;
+import com.shoe.shoemanagement.config.JWTAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,22 +21,38 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
+import java.util.Collections;
+
 @Configuration
-@EnableMethodSecurity
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+
     @Autowired
     private JWTAuthFilter jwtAuthFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
+        httpSecurity.cors(cors -> cors
+                        .configurationSource(request -> {
+                            CorsConfiguration config = new CorsConfiguration();
+                            config.setAllowedOrigins(Collections.singletonList("http://localhost:5173")); // Adjust as needed
+                            config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                            config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+                            return config;
+                        }))
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
+
                         .requestMatchers(HttpMethod.POST, "/user").permitAll()
                         .requestMatchers("/auth/**", "/products/**", "/orders/**", "/api/v1/**","/api/upload/**").permitAll()
+
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
@@ -61,4 +78,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
+
 }

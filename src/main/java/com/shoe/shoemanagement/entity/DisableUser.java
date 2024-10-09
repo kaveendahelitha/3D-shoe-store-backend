@@ -1,14 +1,11 @@
 package com.shoe.shoemanagement.entity;
 
 
-
 import jakarta.persistence.*;
-
 
 @Entity
 @Table(name = "disableuser")
 public class DisableUser {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +17,7 @@ public class DisableUser {
     @Column(name = "right_checkbox")
     private boolean rightCheckbox;
 
-    // Additional fields corresponding to the frontend form
+    // Additional fields
     @Column(name = "left_foot_length")
     private String leftFootLength;
 
@@ -51,7 +48,11 @@ public class DisableUser {
     @Column(name = "description")
     private String description;
 
+    //@ManyToOne
+    //@JoinColumn(name = "user_id")
+    //private User user;
 
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -155,4 +156,12 @@ public class DisableUser {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    // public User getUser() {
+    //   return user;
+    //}
+
+    //public void setUser(User user) {
+    //    this.user = user;
+    //}
 }

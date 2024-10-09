@@ -1,14 +1,16 @@
 package com.shoe.shoemanagement.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "products")
 public class Product {
 
@@ -24,6 +26,10 @@ public class Product {
     private String productColor;
     private String productDescription;
 
+
+    public Long getProductId() {
+        return id;
+    }
 
     @Override
     public String toString() {
