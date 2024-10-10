@@ -24,7 +24,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     private JWTUtils jwtUtils;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
-
+    public static String CURRENT_USER = "";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -42,7 +42,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 
         jwtToken = authHeader.substring(7);
         userEmail = jwtUtils.extractUsername(jwtToken);
-
+        CURRENT_USER = userEmail;
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(userEmail);
             if (jwtUtils.isValidToken(jwtToken, userDetails)) {
