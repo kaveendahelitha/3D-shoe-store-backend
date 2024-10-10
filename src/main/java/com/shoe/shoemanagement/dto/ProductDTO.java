@@ -12,7 +12,7 @@ public class ProductDTO {
     private Long id;
     private String productName;
     private String category;
-    private BigDecimal productPrice;
+    private Double productPrice;
     private String priceRange;
     private String productPhotoUrl;
     private String productColor;

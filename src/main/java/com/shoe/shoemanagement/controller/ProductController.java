@@ -5,6 +5,7 @@ import com.shoe.shoemanagement.dto.PriceLevelDTO;
 import com.shoe.shoemanagement.dto.ProductDTO;
 import com.shoe.shoemanagement.dto.ReqRes;
 
+import com.shoe.shoemanagement.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpHeaders;
@@ -110,4 +111,13 @@ public class ProductController {
             return ResponseEntity.status(500).body(null);
         }
     }
+    @GetMapping({"/getProductDetails/{isSingleProductCheckout}/{productId}"})
+    public List<Product> getProductDetails(@PathVariable(name = "isSingleProductCheckout" ) boolean isSingleProductCheckout,
+                                           @PathVariable(name = "productId")  Long productId) {
+
+        return productService.getProductDetails(isSingleProductCheckout, productId);
+
+    }
+
+
 }

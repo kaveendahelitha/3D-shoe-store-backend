@@ -1,6 +1,6 @@
 package com.shoe.shoemanagement.Serviceuser.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.shoe.shoemanagement.Serviceuser.interfac.IProductService;
 import com.shoe.shoemanagement.dto.PriceLevelDTO;
 import com.shoe.shoemanagement.dto.ProductDTO;
@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -177,5 +178,18 @@ public class ProductService implements IProductService {
         String filename = System.currentTimeMillis() + "_" + photo.getOriginalFilename();
         Files.copy(photo.getInputStream(), this.rootLocation.resolve(filename));
         return filename;
+    }
+    @Override
+    public List<Product> getProductDetails(boolean isSingleProductCheckout, Long productId)
+    {
+        if(isSingleProductCheckout){
+            List<Product>list = new ArrayList<>();
+            Product product = productRepo.findById(productId).get();
+            list.add(product);
+            return list;
+        }else{
+//
+        }
+        return  new ArrayList<>();
     }
 }
