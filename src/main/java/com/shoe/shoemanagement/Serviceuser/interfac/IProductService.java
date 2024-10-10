@@ -5,6 +5,7 @@ package com.shoe.shoemanagement.Serviceuser.interfac;
 import com.shoe.shoemanagement.dto.PriceLevelDTO;
 import com.shoe.shoemanagement.dto.ProductDTO;
 import com.shoe.shoemanagement.dto.ReqRes;
+import com.shoe.shoemanagement.entity.Product;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -26,4 +27,8 @@ public interface IProductService {
     ReqRes addProduct(ProductDTO productDTO, MultipartFile productPhoto);
 
     ReqRes updateProduct(Long id,  ProductDTO productDTO, MultipartFile productPhoto);
+
+    List<Product> getProductDetails(boolean isSingleProductCheckout, Long productId);
+
+
 }

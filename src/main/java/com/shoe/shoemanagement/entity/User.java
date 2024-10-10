@@ -37,6 +37,10 @@ public class User implements UserDetails {
     @NotBlank(message = "Password is required")
     private String password;
 
+    @OneToOne(mappedBy = "user")
+    private ForgotPassword forgotPassword;
+
+
     @NotBlank(message = "Role is required")
     private String role;
 
