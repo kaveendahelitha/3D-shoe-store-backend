@@ -1,12 +1,12 @@
 package com.shoe.shoemanagement.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,16 +19,30 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank(message = "First name is required")
     private String userFirstname;
+
+    @NotBlank(message = "Last name is required")
     private String userLastname;
+
+    @NotBlank(message = "Phone Number is required")
+    private String phoneNumber;
+
     private String address;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
+    @NotBlank(message = "Email is required")
     private String email;
 
+    @NotBlank(message = "Password is required")
     private String password;
-    private String role;
 
+    @OneToOne(mappedBy = "user")
+    private ForgotPassword forgotPassword;
+
+
+    @NotBlank(message = "Role is required")
+    private String role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

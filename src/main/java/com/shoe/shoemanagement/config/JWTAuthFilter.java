@@ -24,7 +24,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     private JWTUtils jwtUtils;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
-
+    public static String CURRENT_USER = "";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -35,14 +35,21 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         final String jwtToken;
         final String userEmail;
 
-        if (authHeader == null || authHeader.isBlank()) {
+        // Add a check to bypass authentication for certain paths
+        String requestPath = request.getRequestURI();
+        if (requestPath.startsWith("/forgotPassword") || requestPath.startsWith("/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        // Proceed with authentication if it's not a public path
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         jwtToken = authHeader.substring(7);
         userEmail = jwtUtils.extractUsername(jwtToken);
-
+        CURRENT_USER = userEmail;
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(userEmail);
             if (jwtUtils.isValidToken(jwtToken, userDetails)) {

@@ -1,15 +1,25 @@
 package com.shoe.shoemanagement.controller;
 
-
 import com.shoe.shoemanagement.Serviceuser.interfac.IProductService;
 import com.shoe.shoemanagement.dto.PriceLevelDTO;
 import com.shoe.shoemanagement.dto.ProductDTO;
 import com.shoe.shoemanagement.dto.ReqRes;
+
+import com.shoe.shoemanagement.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/products")
@@ -17,7 +27,7 @@ public class ProductController {
 
     @Autowired
     private IProductService productService;
-
+    private final Path rootLocation = Paths.get("product-images");
     @GetMapping("/all")
     public ResponseEntity<ReqRes> getAllProducts() {
         ReqRes reqRes = productService.getAllProducts();
@@ -57,8 +67,10 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ReqRes> addProduct(@RequestBody ProductDTO productDTO) {
-        ReqRes reqRes = productService.addProduct(productDTO);
+    public ResponseEntity<ReqRes> addProduct(
+            @RequestPart("product") ProductDTO productDTO,
+            @RequestPart("productPhoto") MultipartFile productPhoto) {
+        ReqRes reqRes = productService.addProduct(productDTO, productPhoto);
         return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
     }
 
@@ -69,8 +81,11 @@ public class ProductController {
     }
 
     @PutMapping("/product-update/{id}")
-    public ResponseEntity<ReqRes> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
-        ReqRes reqRes = productService.updateProduct(id, productDTO);
+    public ResponseEntity<ReqRes> updateProduct(
+            @PathVariable Long id,
+            @RequestPart("product") ProductDTO productDTO,
+            @RequestPart("productPhoto") MultipartFile productPhoto) {
+        ReqRes reqRes = productService.updateProduct(id, productDTO, productPhoto);
         return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
     }
 
@@ -78,6 +93,30 @@ public class ProductController {
     public ResponseEntity<ReqRes> deleteProduct(@PathVariable Long id) {
         ReqRes reqRes = productService.deleteProduct(id);
         return ResponseEntity.status(reqRes.getStatusCode()).body(reqRes);
+    }
+    @GetMapping("/image/{filename}")
+    public ResponseEntity<Resource> serveImage(@PathVariable String filename) {
+        try {
+            Path file = rootLocation.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            } else {
+                return ResponseEntity.status(404).body(null);
+            }
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+    @GetMapping({"/getProductDetails/{isSingleProductCheckout}/{productId}"})
+    public List<Product> getProductDetails(@PathVariable(name = "isSingleProductCheckout" ) boolean isSingleProductCheckout,
+                                           @PathVariable(name = "productId")  Long productId) {
+
+        return productService.getProductDetails(isSingleProductCheckout, productId);
+
     }
 
 

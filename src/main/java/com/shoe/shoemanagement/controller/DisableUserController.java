@@ -15,11 +15,10 @@ public class DisableUserController {
     @Autowired
     private DisableUserRepository disableUserRepository;
 
-    @PostMapping("/user")
+    @PostMapping("/disableuser")
     DisableUser newUser(@RequestBody DisableUser newUser) {
         return disableUserRepository.save(newUser);
     }
-
 
 
 }

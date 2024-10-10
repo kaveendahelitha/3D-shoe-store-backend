@@ -4,8 +4,10 @@ import com.shoe.shoemanagement.dto.PriceLevelDTO;
 import com.shoe.shoemanagement.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Repository
@@ -44,4 +46,7 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
             "p.priceRange LIKE %:priceRange% AND " +
             "p.category LIKE %:category%")
     List<Product> findProductsByColorPriceAndCategory(String category, String productColor, String priceRange);
+
+
+
 }

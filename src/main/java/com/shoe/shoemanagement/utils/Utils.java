@@ -35,34 +35,16 @@ public class Utils {
        UserDTO userDTO=new UserDTO();
 
         userDTO.setId(user.getId());
-userDTO.setUserFirstname(user.getUserFirstname());
-userDTO.setUserLastname(user.getUserLastname());
-userDTO.setAddress(user.getAddress());
-userDTO.setEmail(user.getEmail());
-userDTO.setRole(user.getRole());
-
-
-
+        userDTO.setUserFirstname(user.getUserFirstname());
+        userDTO.setUserLastname(user.getUserLastname());
+        userDTO.setPhoneNumber(user.getPhoneNumber());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setRole(user.getRole());
         return userDTO;
     }
 
     public static ProductDTO mapProductEntityToProductDTO(Product product) {
         ProductDTO productDTO = new ProductDTO();
-
-      productDTO.setId(product.getId());
-      productDTO.setProductName(product.getProductName());
-      productDTO.setCategory(product.getCategory());
-      productDTO.setProductPrice(product.getProductPrice());
-      productDTO.setProductPhotoUrl(product.getProductPhotoUrl());
-      productDTO.setProductColor(product.getProductColor());
-      productDTO.setProductDescription(product.getProductDescription());
-        return productDTO;
-    }
-
-
-    public static ProductDTO mapProductEntityToProductDTOPlusOrders(Product product) {
-        ProductDTO productDTO = new ProductDTO();
-
         productDTO.setId(product.getId());
         productDTO.setProductName(product.getProductName());
         productDTO.setCategory(product.getCategory());
@@ -71,12 +53,26 @@ userDTO.setRole(user.getRole());
         productDTO.setProductColor(product.getProductColor());
         productDTO.setProductDescription(product.getProductDescription());
         return productDTO;
-
-       /* if (room.getBookings() != null) {
-            roomDTO.setBookings(room.getBookings().stream().map(Utils::mapBookingEntityToBookingDTO).collect(Collectors.toList()));
-        }*/
-
     }
+
+
+//    public static ProductDTO mapProductEntityToProductDTOPlusOrders(Product product) {
+//        ProductDTO productDTO = new ProductDTO();
+//
+//        productDTO.setId(product.getId());
+//        productDTO.setProductName(product.getProductName());
+//        productDTO.setCategory(product.getCategory());
+//        productDTO.setProductPrice(product.getProductPrice());
+//        productDTO.setProductPhotoUrl(product.getProductPhotoUrl());
+//        productDTO.setProductColor(product.getProductColor());
+//        productDTO.setProductDescription(product.getProductDescription());
+//        return productDTO;
+//
+//       /* if (room.getBookings() != null) {
+//            roomDTO.setBookings(room.getBookings().stream().map(Utils::mapBookingEntityToBookingDTO).collect(Collectors.toList()));
+//        }*/
+//
+//    }
 
 
 
