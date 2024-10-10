@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
 
-                        .requestMatchers(HttpMethod.POST, "/user").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user","/addToCart/").permitAll()
                         .requestMatchers("/auth/**", "/products/**", "/orders/**","/forgotPassword/**", "/api/v1/**","/api/upload/**").permitAll()
 
                         .anyRequest().authenticated())
