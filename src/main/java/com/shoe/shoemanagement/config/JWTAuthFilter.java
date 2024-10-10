@@ -2,6 +2,7 @@ package com.shoe.shoemanagement.config;
 
 import com.shoe.shoemanagement.Serviceuser.CustomUserDetailsService;
 import com.shoe.shoemanagement.utils.JWTUtils;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
