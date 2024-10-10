@@ -13,7 +13,7 @@ public class UserDTO {
 
     private int id;
 
-     @NotBlank(message = "First name is required")
+    @NotBlank(message = "First name is required")
     private String userFirstname;
 
     @NotBlank(message = "Last name is required")
@@ -32,4 +32,6 @@ public class UserDTO {
     private String password;
 
     private String role;
+
+
 }
