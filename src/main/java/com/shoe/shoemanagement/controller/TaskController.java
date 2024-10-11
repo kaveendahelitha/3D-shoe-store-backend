@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,17 @@ public class TaskController {
     @PostMapping("/tasks")
     public ResponseEntity<?> createTask(@RequestBody Task task) {
         try {
+            LocalDate today = LocalDate.now();
+
+            // Ensure that createdDate is not in the future and completedDate is not before createdDate
+            if (task.getCreatedDate() != null && task.getCreatedDate().isAfter(today)) {
+                return ResponseEntity.status(400).body("Error: Created date cannot be in the future.");
+            }
+
+            if (task.getCompletedDate() != null && task.getCompletedDate().isBefore(task.getCreatedDate())) {
+                return ResponseEntity.status(400).body("Error: Completed date cannot be before the created date.");
+            }
+
             // Fetch employee by ID if provided
             Long employeeId = task.getEmployee() != null ? task.getEmployee().getId() : null;
             if (employeeId != null) {
@@ -43,11 +55,11 @@ public class TaskController {
             Task createdTask = taskRepository.save(task);
             return ResponseEntity.status(201).body(createdTask);
         } catch (Exception e) {
-            // Log the full error message and stack trace for debugging
-            e.printStackTrace(); // or log using a logger
+            e.printStackTrace();
             return ResponseEntity.status(500).body("An error occurred while saving the task: " + e.getMessage());
         }
     }
+
     // Get task by ID REST API
     @GetMapping("/tasks/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
