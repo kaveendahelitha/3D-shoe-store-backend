@@ -56,23 +56,23 @@ public class Utils {
     }
 
 
-    public static ProductDTO mapProductEntityToProductDTOPlusOrders(Product product) {
-        ProductDTO productDTO = new ProductDTO();
-
-        productDTO.setId(product.getId());
-        productDTO.setProductName(product.getProductName());
-        productDTO.setCategory(product.getCategory());
-        productDTO.setProductPrice(product.getProductPrice());
-        productDTO.setProductPhotoUrl(product.getProductPhotoUrl());
-        productDTO.setProductColor(product.getProductColor());
-        productDTO.setProductDescription(product.getProductDescription());
-        return productDTO;
-
-       /* if (room.getBookings() != null) {
-            roomDTO.setBookings(room.getBookings().stream().map(Utils::mapBookingEntityToBookingDTO).collect(Collectors.toList()));
-        }*/
-
-    }
+//    public static ProductDTO mapProductEntityToProductDTOPlusOrders(Product product) {
+//        ProductDTO productDTO = new ProductDTO();
+//
+//        productDTO.setId(product.getId());
+//        productDTO.setProductName(product.getProductName());
+//        productDTO.setCategory(product.getCategory());
+//        productDTO.setProductPrice(product.getProductPrice());
+//        productDTO.setProductPhotoUrl(product.getProductPhotoUrl());
+//        productDTO.setProductColor(product.getProductColor());
+//        productDTO.setProductDescription(product.getProductDescription());
+//        return productDTO;
+//
+//       /* if (room.getBookings() != null) {
+//            roomDTO.setBookings(room.getBookings().stream().map(Utils::mapBookingEntityToBookingDTO).collect(Collectors.toList()));
+//        }*/
+//
+//    }
 
 
 

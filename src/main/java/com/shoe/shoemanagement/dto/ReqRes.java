@@ -26,10 +26,6 @@ public class ReqRes {
     private String name;
     private User User;
     private List<User> UserList;
-
-
-
-
     private List<ProductDTO> productList;
 
 
