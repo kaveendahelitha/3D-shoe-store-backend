@@ -2,6 +2,7 @@ package com.shoe.shoemanagement.config;
 
 import com.shoe.shoemanagement.Serviceuser.CustomUserDetailsService;
 import com.shoe.shoemanagement.utils.JWTUtils;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     private JWTUtils jwtUtils;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+    // Static variable to store the current user's username
     public static String CURRENT_USER = "";
 
     @Override
@@ -41,15 +43,26 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        // Proceed with authentication if it's not a public path
+       // If the Authorization header is missing or does not start with "Bearer ", proceed without applying the filter
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         jwtToken = authHeader.substring(7);
-        userEmail = jwtUtils.extractUsername(jwtToken);
-        CURRENT_USER = userEmail;
+        try {
+            // Extract the username from the JWT token
+            userEmail = jwtUtils.extractUsername(jwtToken);
+            CURRENT_USER = userEmail; // Set the static variable with the current username
+        } catch (IllegalArgumentException e) {
+            System.out.println("Unable to get JWT Token");
+            filterChain.doFilter(request, response);
+            return;
+        } catch (ExpiredJwtException e) {
+            System.out.println("JWT Token has expired");
+            filterChain.doFilter(request, response);
+            return;
+        }
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(userEmail);
             if (jwtUtils.isValidToken(jwtToken, userDetails)) {

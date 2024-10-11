@@ -46,7 +46,7 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
             "p.priceRange LIKE %:priceRange% AND " +
             "p.category LIKE %:category%")
     List<Product> findProductsByColorPriceAndCategory(String category, String productColor, String priceRange);
-
+    List<Product> findByProductNameContainingIgnoreCaseOrProductDescriptionContainingIgnoreCase(String key1, String key2);
 
 
 }
