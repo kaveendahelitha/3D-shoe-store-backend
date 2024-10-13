@@ -2,11 +2,16 @@ package com.shoe.shoemanagement.Serviceuser.impl;
 
 
 import com.shoe.shoemanagement.Serviceuser.interfac.IProductService;
+import com.shoe.shoemanagement.config.JWTAuthFilter;
 import com.shoe.shoemanagement.dto.PriceLevelDTO;
 import com.shoe.shoemanagement.dto.ProductDTO;
 import com.shoe.shoemanagement.dto.ReqRes;
+import com.shoe.shoemanagement.entity.Cart;
 import com.shoe.shoemanagement.entity.Product;
+import com.shoe.shoemanagement.entity.User;
+import com.shoe.shoemanagement.repository.CartRepository;
 import com.shoe.shoemanagement.repository.ProductRepo;
+import com.shoe.shoemanagement.repository.UserRepo;
 import com.shoe.shoemanagement.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -20,12 +25,19 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService implements IProductService {
 
     @Autowired
     private ProductRepo productRepo;
+
+    @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
+    private CartRepository cartRepository;
 
     private final Path rootLocation = Paths.get("product-images");
 
@@ -182,14 +194,18 @@ public class ProductService implements IProductService {
     @Override
     public List<Product> getProductDetails(boolean isSingleProductCheckout, Long productId)
     {
-        if(isSingleProductCheckout){
+        if(isSingleProductCheckout && productId != 0){
             List<Product>list = new ArrayList<>();
             Product product = productRepo.findById(productId).get();
             list.add(product);
             return list;
         }else{
-//
+            String username = JWTAuthFilter.CURRENT_USER;
+            User user = userRepo.findByEmail(username).get();
+            List<Cart> carts = cartRepository.findByUser(user);
+
+            return carts.stream().map(x -> x.getProduct()).collect(Collectors.toList());
         }
-        return  new ArrayList<>();
+
     }
 }
