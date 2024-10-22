@@ -1,9 +1,8 @@
 package com.shoe.shoemanagement.controller;
 
 import com.shoe.shoemanagement.entity.Cart;
-import com.shoe.shoemanagement.service.CartService;
+import com.shoe.shoemanagement.Serviceuser.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

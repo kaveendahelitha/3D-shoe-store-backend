@@ -2,7 +2,7 @@ package com.shoe.shoemanagement.Serviceuser;
 
 
 import com.shoe.shoemanagement.config.JWTAuthFilter;
-import com.shoe.shoemanagement.dao.OrderDetailDao;
+import com.shoe.shoemanagement.repository.OrderDetailDao;
 import com.shoe.shoemanagement.entity.*;
 import com.shoe.shoemanagement.repository.CartRepository;
 import com.shoe.shoemanagement.repository.ProductRepo;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -1,4 +1,4 @@
-package com.shoe.shoemanagement.dao;
+package com.shoe.shoemanagement.repository;
 
 import com.shoe.shoemanagement.entity.OrderDetail;
 import com.shoe.shoemanagement.entity.User;

@@ -39,6 +39,9 @@ public class OrderDetailController {
     public void markOrderAsDelivered(@PathVariable(name = "orderId") Integer orderId) {
         orderDetailService.markOrderAsDelivered(orderId);
     }
+
+
+
     @DeleteMapping({"/deleteOrder/{orderId}"})
     public void deleteOrder(@PathVariable(name = "orderId") Integer orderId) {
         orderDetailService.deleteOrderItem(orderId);
