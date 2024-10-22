@@ -1,7 +1,11 @@
 package com.shoe.shoemanagement.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "employees")
 public class Employee {
@@ -19,38 +23,21 @@ public class Employee {
     @Column(name = "email_id")
     private String emailId;
 
-    public Employee() {
+    // One-to-One relationship with User, only for users with role EMPLOYEE
+    @OneToOne(cascade = CascadeType.ALL)  // Add the cascade type here
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
+
+    public Employee() {
     }
 
-    public Employee(String firstName, String lastName, String emailId) {
+    public Employee(String firstName, String lastName, String emailId, User user) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailId = emailId;
+        this.user = user;
     }
-    public long getId() {
-        return id;
-    }
-    public void setId(long id) {
-        this.id = id;
-    }
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    public String getLastName() {
-        return lastName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    public String getEmailId() {
-        return emailId;
-    }
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
+
 }

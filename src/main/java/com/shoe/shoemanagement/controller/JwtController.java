@@ -2,7 +2,7 @@ package com.shoe.shoemanagement.controller;
 
 import com.shoe.shoemanagement.entity.JwtRequest;
 import com.shoe.shoemanagement.entity.JwtResponse;
-import com.shoe.shoemanagement.service.JwtService;
+import com.shoe.shoemanagement.Serviceuser.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;

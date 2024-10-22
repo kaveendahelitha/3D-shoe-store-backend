@@ -1,4 +1,4 @@
-package com.shoe.shoemanagement.service;
+package com.shoe.shoemanagement.Serviceuser;
 
 import com.shoe.shoemanagement.exceptions.ResourceNotFoundException;
 import com.shoe.shoemanagement.entity.Sale;
