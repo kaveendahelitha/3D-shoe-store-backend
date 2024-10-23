@@ -54,7 +54,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.POST, "/user","/addToCart/","/disableuser").permitAll()
 
-                        .requestMatchers("/auth/**", "/products/**", "/orders/**","/forgotPassword/**", "/api/v1/**","/api/upload/**").permitAll()
+                        .requestMatchers("/auth/**", "/products/**", "/orders/**","/forgotPassword/**", "/api/v1/**","/api/upload/**","/api/feedback/**").permitAll()
 
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
