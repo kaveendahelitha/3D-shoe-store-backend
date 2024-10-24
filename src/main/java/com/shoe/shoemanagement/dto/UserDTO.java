@@ -13,10 +13,10 @@ public class UserDTO {
 
     private int id;
 
-    @NotBlank(message = "First name is required")
+
     private String userFirstname;
 
-    @NotBlank(message = "Last name is required")
+
     private String userLastname;
 
     @NotBlank(message = "Phone Number is required")

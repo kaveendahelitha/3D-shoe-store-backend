@@ -43,6 +43,7 @@ public class Utils {
         return userDTO;
     }
 
+
     public static ProductDTO mapProductEntityToProductDTO(Product product) {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setId(product.getId());

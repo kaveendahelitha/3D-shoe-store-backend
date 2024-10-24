@@ -1,6 +1,7 @@
 package com.shoe.shoemanagement.Serviceuser.impl;
 
 
+import com.shoe.shoemanagement.Serviceuser.EmployeeService;
 import com.shoe.shoemanagement.Serviceuser.interfac.IUserService;
 import com.shoe.shoemanagement.dto.LoginRequest;
 import com.shoe.shoemanagement.dto.ReqRes;
@@ -46,13 +47,16 @@ public class UserService implements IUserService {
     private final JWTUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
 
+    private final EmployeeService employeeService;
+
     @Autowired
     public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder,
-                       JWTUtils jwtUtils, AuthenticationManager authenticationManager) {
+                       JWTUtils jwtUtils, AuthenticationManager authenticationManager,EmployeeService employeeService) {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
+        this.employeeService = employeeService;
     }
 
     @Override
@@ -66,8 +70,14 @@ public class UserService implements IUserService {
             if (userRepo.existsByEmail(user.getEmail())) {
                 throw new OurException("Email " + user.getEmail() + " already exists");
             }
+
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             User savedUser = userRepo.save(user);
+
+            if ("EMPLOYEE".equalsIgnoreCase(user.getRole())) {
+                employeeService.createEmployee(savedUser, user.getUserFirstname(), user.getUserLastname(), user.getEmail());
+            }
+
             UserDTO userdto = Utils.mapUserEntityToUserDTO(savedUser);
             response.setStatusCode(200);
             response.setUser(savedUser);

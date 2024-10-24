@@ -4,6 +4,7 @@ package com.shoe.shoemanagement.controller;
 import com.shoe.shoemanagement.entity.Employee;
 import com.shoe.shoemanagement.exceptions.ResourceNotFoundException;
 import com.shoe.shoemanagement.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,11 +30,6 @@ public class EmployeeController {
         return employeeRepository.findAll();
     }
 
-    // create employee rest api
-    @PostMapping("/employees")
-    public Employee createEmployee(@RequestBody Employee employee) {
-        return employeeRepository.save(employee);
-    }
 
     // get employee by id rest api
     @GetMapping("/employees/{id}")
@@ -59,6 +55,7 @@ public class EmployeeController {
     }
 
     // delete employee rest api
+    @Transactional
     @DeleteMapping("/employees/{id}")
     public ResponseEntity<Map<String, Boolean>> deleteEmployee(@PathVariable Long id){
         Employee employee = employeeRepository.findById(id)
@@ -69,6 +66,7 @@ public class EmployeeController {
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);
     }
+
 
     // New endpoint to get employee details for dropdown (ID, Name, Email)
     @GetMapping("/employees/dropdown")
