@@ -121,6 +121,7 @@ public class OrderDetailService{
                     orderInput.getFullAddress(),
                     orderInput.getContactNumber(),
                     orderInput.getAlternateContactNumber(),
+                    orderInput.getSize(),
                     ORDER_PLACED,
                     product.getProductPrice()*o.getQuantity(),
                     product,

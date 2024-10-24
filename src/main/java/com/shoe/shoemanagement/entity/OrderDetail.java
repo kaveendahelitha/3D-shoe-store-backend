@@ -16,7 +16,9 @@ public class OrderDetail {
     private String orderFullOrder;
     private String orderContactNumber;
     private String orderAlternateContactNumber;
+    private Integer orderSize;
     private String orderStatus;
+
     private Double orderAmount;
 
     @ManyToOne
@@ -27,11 +29,12 @@ public class OrderDetail {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public OrderDetail(String orderFullName, String orderFullOrder, String orderContactNumber, String orderAlternateContactNumber, String orderStatus, Double orderAmount, Product product, User user) {
+    public OrderDetail(String orderFullName, String orderFullOrder, String orderContactNumber, String orderAlternateContactNumber, Integer orderSize,String orderStatus, Double orderAmount, Product product, User user) {
         this.orderFullName = orderFullName;
         this.orderFullOrder = orderFullOrder;
         this.orderContactNumber = orderContactNumber;
         this.orderAlternateContactNumber = orderAlternateContactNumber;
+        this.orderSize = orderSize;
         this.orderStatus = orderStatus;
         this.orderAmount = orderAmount;
         this.product = product;
