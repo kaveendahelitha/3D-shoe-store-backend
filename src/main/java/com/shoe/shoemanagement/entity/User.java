@@ -1,5 +1,6 @@
 package com.shoe.shoemanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -19,10 +20,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank(message = "First name is required")
     private String userFirstname;
-
-    @NotBlank(message = "Last name is required")
     private String userLastname;
 
     @NotBlank(message = "Phone Number is required")
@@ -37,9 +35,9 @@ public class User implements UserDetails {
     @NotBlank(message = "Password is required")
     private String password;
 
-    @OneToOne(mappedBy = "user")
-    private ForgotPassword forgotPassword;
-
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Employee employee;
 
     @NotBlank(message = "Role is required")
     private String role;
@@ -72,5 +70,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public boolean isEmployee() {
+        return "EMPLOYEE".equalsIgnoreCase(role);
     }
 }
