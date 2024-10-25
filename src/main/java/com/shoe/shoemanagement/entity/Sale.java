@@ -21,11 +21,12 @@ public class Sale {
     @Column(name = "sold_price")
     private double soldPrice;
 
-    @Column(name = "profit")
+    // Removed @Column annotation for profit as it's derived
     private double profit;
 
     @Column(name = "date")
     private LocalDate date;
+
     public Sale() {
     }
 
@@ -33,7 +34,7 @@ public class Sale {
         this.itemName = itemName;
         this.givenPrice = givenPrice;
         this.soldPrice = soldPrice;
-        this.profit = soldPrice - givenPrice;
+        this.profit = calculateProfit(); // Calculate profit at object creation
     }
 
     // Getters and Setters
@@ -59,6 +60,7 @@ public class Sale {
 
     public void setGivenPrice(double givenPrice) {
         this.givenPrice = givenPrice;
+        this.profit = calculateProfit(); // Recalculate profit when givenPrice changes
     }
 
     public double getSoldPrice() {
@@ -67,24 +69,35 @@ public class Sale {
 
     public void setSoldPrice(double soldPrice) {
         this.soldPrice = soldPrice;
+        this.profit = calculateProfit(); // Recalculate profit when soldPrice changes
     }
 
     public double getProfit() {
-        return profit;
+        return profit; // Always return the dynamically calculated profit
     }
 
-    public void setProfit(double profit) {
-        this.profit = profit;
-    }
-
-
+    // No setter for profit, since it's derived from soldPrice and givenPrice
 
     public LocalDate getDate() {
         return date;
     }
+
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
+    // Private method to calculate profit
+    private double calculateProfit() {
+        return this.soldPrice - this.givenPrice;
+    }
+
+    public void setProfit(double profit) {
+    }
+
+
+
+
+
+
+
 }
-
-
