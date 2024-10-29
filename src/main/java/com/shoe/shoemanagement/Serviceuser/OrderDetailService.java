@@ -21,7 +21,7 @@ import java.security.NoSuchAlgorithmException;
 public class OrderDetailService{
 
     private static final String ORDER_PLACED = "Placed";
-    private String merchantSecret = "NzU5Mjk3MjQ4MjA5MjM3NzE0NzIyODMwMzgxMDczNTU3ODU3MzIx";
+    private String merchantSecret = "";
     @Autowired
     private ProductRepo productRepo;
 
@@ -74,7 +74,7 @@ public class OrderDetailService{
     }
 
     public TransactionDetails createTransaction(Double amount) {
-        String merchantID = "1228411";
+        String merchantID = "";
         String orderID = Long.toString(System.currentTimeMillis());
         String currency = "LKR";
         DecimalFormat df = new DecimalFormat("0.00");
