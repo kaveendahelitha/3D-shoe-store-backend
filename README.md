@@ -52,7 +52,7 @@ spring.datasource.password=yourpassword
 ```
 
 # Workflow
-- ![image](https://github.com/jaygajera17/E-commerce-project-springBoot/assets/81226571/69951cb7-65e2-4225-8681-2542859aaec6)
+- ![image](workflow.png.png)
 
 ### 4. Run the Project
 Run the ShoemanagementApplication.java main method in your IDE.
